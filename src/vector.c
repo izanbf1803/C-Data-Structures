@@ -1,10 +1,10 @@
-#include "include/cvector.h"
+#include "include/vector.h"
 
-cvector* cvector_create(size_t sizeof_type)
+vector* vector_create(size_t sizeof_type)
 {
 	assert(sizeof_type > 0);
 
-	cvector* v = (cvector*) malloc(sizeof(cvector));
+	vector* v = (vector*) malloc(sizeof(vector));
 	v->sizeof_type = sizeof_type;
 	v->capacity = 2;
 	v->size = 0;
@@ -12,7 +12,7 @@ cvector* cvector_create(size_t sizeof_type)
 	return v;
 }
 
-void cvector_destroy(cvector* v)
+void vector_destroy(vector* v)
 {
 	assert(v != NULL);
 
@@ -20,17 +20,17 @@ void cvector_destroy(cvector* v)
 	free(v);
 }
 
-void cvector_push(cvector* v, void* item)
+void vector_push(vector* v, void* item)
 {
 	assert(v != NULL && item != NULL);
 
 	++v->size;
-	cvector_reserve(v, v->size);
+	vector_reserve(v, v->size);
 	size_t offset = (v->size - 1) * v->sizeof_type;
 	memcpy(v->data + offset, item, v->sizeof_type);
 }
 
-void cvector_reserve(cvector* v, size_t size)
+void vector_reserve(vector* v, size_t size)
 {
 	assert(v != NULL && size > 0);
 
@@ -42,7 +42,7 @@ void cvector_reserve(cvector* v, size_t size)
 	}
 }
 
-bool cvector_find(cvector* v, size_t* index, void* item)
+bool vector_find(vector* v, size_t* index, void* item)
 {
 	assert(v != NULL && index != NULL && item != NULL);
 
@@ -57,7 +57,7 @@ bool cvector_find(cvector* v, size_t* index, void* item)
 	return false;
 }
 
-void* cvector_at(cvector* v, size_t index)
+void* vector_at(vector* v, size_t index)
 {
 	assert(v != NULL && index < v->size);
 
