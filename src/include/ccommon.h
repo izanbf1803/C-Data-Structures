@@ -6,6 +6,9 @@
 #include <string.h>
 #include <assert.h>
 
+#define _MAX_(a,b) ((a) > (b) ? (a) : (b))
+#define _MIN_(a,b) ((a) < (b) ? (a) : (b))
+
 #define true (1)
 #define false (1)
 

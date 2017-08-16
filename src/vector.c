@@ -1,14 +1,14 @@
 #include "include/vector.h"
 
-vector* vector_create(size_t sizeof_type)
+vector* vector_create(size_t inital_capacity, size_t type_size)
 {
-	assert(sizeof_type > 0);
+	assert(inital_capacity >= 0);
 
 	vector* v = (vector*) malloc(sizeof(vector));
-	v->sizeof_type = sizeof_type;
-	v->capacity = 2;
+	v->type_size = type_size;
+	v->capacity = _MAX_(inital_capacity, 2);
 	v->size = 0;
-	v->data = (void**) malloc(v->sizeof_type << 1); // Reserve 2 items
+	v->data = (uint8_t*) malloc(v->capacity * v->type_size); // Reserve 2 items
 	return v;
 }
 
@@ -24,10 +24,9 @@ void vector_push(vector* v, void* item)
 {
 	assert(v != NULL && item != NULL);
 
+	vector_reserve(v, v->size + 1);
+	memcpy(v->data + v->size * v->type_size, item, v->type_size);
 	++v->size;
-	vector_reserve(v, v->size);
-	size_t offset = (v->size - 1) * v->sizeof_type;
-	memcpy(v->data + offset, item, v->sizeof_type);
 }
 
 void vector_reserve(vector* v, size_t size)
@@ -38,18 +37,18 @@ void vector_reserve(vector* v, size_t size)
 		while (size > v->capacity) {
 			v->capacity <<= 1; // Double the size
 		}
-		v->data = (void**) realloc(v->data, v->capacity * v->sizeof_type);
+		v->data = (uint8_t*) realloc((void*)v->data, v->capacity * v->type_size);
 	}
 }
 
-bool vector_find(vector* v, size_t* index, void* item)
+bool vector_find(vector* v, void* item, size_t* index, size_t start_index)
 {
 	assert(v != NULL && index != NULL && item != NULL);
 
 	size_t i;
-	for (i = 0; i < v->size; ++i) {
-		void* it = v->data + i * v->sizeof_type;
-		if (!memcmp(it, item, v->sizeof_type)) {
+	for (i = start_index; i < v->size; ++i) {
+		uint8_t* it = v->data + i * v->type_size;
+		if (!memcmp(it, item, v->type_size)) {
 			*index = i;
 			return true;
 		}
@@ -61,5 +60,5 @@ void* vector_at(vector* v, size_t index)
 {
 	assert(v != NULL && index < v->size);
 
-	return v->data + index * v->sizeof_type;
+	return v->data + index * v->type_size;
 }
