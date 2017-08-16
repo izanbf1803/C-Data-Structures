@@ -1,9 +1,12 @@
 #include "include/vector.h"
+#include "include/queue.h"
+#include "include/stack.h"
 #include <stdio.h>
 
 int main()
 {
-	/* VECTOR TEST */
+	// vector TEST
+	/*
 	vector* v_int = vector_create(0, sizeof(int));
 
 	int n = 10;
@@ -25,7 +28,55 @@ int main()
 	for (i = 0; i < v_int->size; ++i) {
 		printf("%d\n", *(int*)vector_at(v_int, i));
 	}
-	/*****************/
+
+	vector_destroy(v_int);
+	*/
+
+
+	// queue TEST 
+	/*
+	queue* q = queue_create(sizeof(int));
+
+	int n = 10;
+	queue_push(q, &n);
+	++n;
+	queue_push(q, &n);
+	++n;
+	queue_push(q, &n);
+	n *= 3;
+	queue_push(q, &n);
+
+	while (q->size > 0) {
+		printf("%d\n", *(int*)queue_front(q));
+		queue_pop(q);
+	}
+
+	queue_destroy(q);
+	*/
+
+
+	// stack TEST
+	/*
+	stack* s = stack_create(sizeof(int));
+
+	int n = 10;
+	stack_push(s, &n);
+	++n;
+	stack_push(s, &n);
+	++n;
+	stack_push(s, &n);
+	n *= 3;
+	stack_push(s, &n);
+
+	while (s->size > 0) {
+		printf("%d\n", *(int*)stack_top(s));
+		stack_pop(s);
+	}
+
+	stack_destroy(s);
+	*/
+
+
 
 	return 0;
 }
