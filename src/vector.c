@@ -26,7 +26,7 @@ void vector_push(vector* v, void* item)
 
 	vector_reserve(v, v->size + 1);
 	memcpy(v->data + v->size * v->type_size, item, v->type_size);
-	++v->size;
+	++(v->size);
 }
 
 void vector_reserve(vector* v, size_t size)
