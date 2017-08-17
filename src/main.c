@@ -1,15 +1,18 @@
+#include <stdio.h>
 #include "include/vector.h"
 #include "include/queue.h"
 #include "include/stack.h"
-#include <stdio.h>
+#include "include/heap.h"
 
 int main()
 {
+	int n;
+
 	// vector TEST
 	/*
 	vector* v_int = vector_create(0, sizeof(int));
 
-	int n = 10;
+	n = 10;
 	vector_push(v_int, &n);
 	++n;
 	vector_push(v_int, &n);
@@ -37,7 +40,7 @@ int main()
 	/*
 	queue* q = queue_create(sizeof(int));
 
-	int n = 10;
+	n = 10;
 	queue_push(q, &n);
 	++n;
 	queue_push(q, &n);
@@ -59,7 +62,7 @@ int main()
 	/*
 	stack* s = stack_create(sizeof(int));
 
-	int n = 10;
+	n = 10;
 	stack_push(s, &n);
 	++n;
 	stack_push(s, &n);
@@ -77,6 +80,31 @@ int main()
 	*/
 
 
+	// heap TEST
+	/*
+	heap* h = heap_create(sizeof(int));
+
+	n = 123;
+	heap_push(h, 30, &n);
+	n = 1;
+	heap_push(h, 40, &n);
+	n = 3;
+	heap_push(h, 10, &n);
+	n = 5;
+	heap_push(h, 20, &n);
+	n = 11322;
+	heap_push(h, 0, &n);
+	n = 22333;
+	heap_push(h, 7, &n);
+
+	while (h->size > 0) {
+		heap_node* n = heap_top(h);
+		printf("*%d : %d\n", n->cost, *(int*)n->data);
+		heap_pop(h);
+	}
+
+	heap_destroy(h);
+	*/
 
 	return 0;
 }

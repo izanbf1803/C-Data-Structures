@@ -25,7 +25,8 @@ void queue_destroy(queue* q)
 
 void queue_push(queue* q, void* item)
 {
-	assert(q != NULL && item != NULL);
+	assert(q != NULL);
+	assert(item != NULL);
 
 	struct __queue_node* node = (struct __queue_node*) malloc(sizeof(struct __queue_node));
 	node->right = NULL;
@@ -46,14 +47,16 @@ void queue_push(queue* q, void* item)
 
 void* queue_front(queue* q)
 {
-	assert(q != NULL && q->size > 0);
+	assert(q != NULL);
+	assert(q->size > 0);
 
 	return q->front->data;
 }
 
 void queue_pop(queue* q)
 {
-	assert(q != NULL && q->size > 0);
+	assert(q != NULL);
+	assert(q->size > 0);
 
 	struct __queue_node* temp = q->front;
 	q->front = temp->right;

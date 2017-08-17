@@ -21,7 +21,8 @@ void stack_destroy(stack* s)
 
 void stack_push(stack* s, void* item)
 {
-	assert(s != NULL && item != NULL);
+	assert(s != NULL);
+	assert(item != NULL);
 
 	vector_push(s->vec, item);
 
@@ -30,14 +31,16 @@ void stack_push(stack* s, void* item)
 
 void* stack_top(stack* s)
 {
-	assert(s != NULL && s->size > 0);
+	assert(s != NULL);
+	assert(s->size > 0);
 
 	return vector_at(s->vec, s->vec->size - 1);
 }
 
 void stack_pop(stack* s)
 {
-	assert(s != NULL && s->size > 0);
+	assert(s != NULL);
+	assert(s->size > 0);
 
 	--(s->vec->size);
 	--(s->size);
