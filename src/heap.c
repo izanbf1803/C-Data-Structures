@@ -72,21 +72,6 @@ static heap_node* node_at(heap* h, size_t n)
     return vector_at(h->vec, n);
 }
 
-static inline size_t left_node(size_t n) 
-{
-    return (n << 1) + 1;
-}
-
-static inline size_t right_node(size_t n) 
-{
-    return (n << 1) + 2;
-}   
-
-static inline size_t parent_node(size_t n) 
-{
-    return ((n - 1) >> 1);
-}
-
 static void node_swap(heap_node* a, heap_node* b) 
 {
     heap_node temp = *a;
@@ -98,36 +83,34 @@ void __heap_shift_down(heap* h)
 {
     assert(h->size > 0);
 
-    // Current node and cost
-    size_t cnode = 0;
+    size_t current_index = 0;
 
     while (1) {
-        heap_node* current = node_at(h, cnode);
-        heap_node* left = node_at(h, left_node(cnode));
-        heap_node* right = node_at(h, right_node(cnode));
+        heap_node* current = node_at(h, current_index);
 
-        bool left_is_small = (left != NULL && left->cost < current->cost);
-        bool right_is_small = (right != NULL && right->cost < current->cost);
+        size_t left_index = (current_index << 1) + 1;
+        size_t right_index = left_index + 1;
 
-        if (left_is_small && right_is_small) {
-            if (left->cost <= right->cost) {
-                cnode = left_node(cnode);
-                node_swap(left, current);
+        if (left_index < h->size) {
+            heap_node* left = node_at(h, left_index);
+            heap_node* child_with_less_cost = left;
+
+            if (right_index < h->size) {
+                heap_node* right = node_at(h, right_index);
+                if (right->cost < left->cost) {
+                    child_with_less_cost = right;
+                }
+            }
+
+            if (child_with_less_cost->cost < current->cost) {
+                node_swap(child_with_less_cost, current);
             }
             else {
-                cnode = right_node(cnode);
-                node_swap(right, current);
+                return;
             }
         }
-        else if (left_is_small) {
-            cnode = left_node(cnode);
-            node_swap(left, current);
-        }
-        else if (right_is_small) {
-            cnode = right_node(cnode);
-            node_swap(right, current);
-        }
-        else break;
+
+        return; // Any node after current
     }
 }
 
@@ -135,17 +118,19 @@ void __heap_shift_up(heap* h)
 {
     assert(h->size > 0);
 
-    // Current node and cost
-    size_t cnode = (h->size - 1);
+    size_t current_index = (h->size - 1);
 
-    while (cnode > 0) {
-        heap_node* current = node_at(h, cnode);
-        heap_node* parent = node_at(h, parent_node(cnode));
+    while (current_index > 0) {
+        size_t parent_index = ((current_index - 1) >> 1);
+        heap_node* current = node_at(h, current_index);
+        heap_node* parent = node_at(h, parent_index);
 
         if (current->cost < parent->cost) {
-            cnode = parent_node(cnode);
             node_swap(parent, current);
+            current_index = parent_index;
         }
-        else break;
+        else {
+            break;
+        }
     }
 }
